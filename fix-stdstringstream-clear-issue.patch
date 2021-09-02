@@ -1,0 +1,47 @@
+From 428dae84bb97624d31a2b9c0c1f91c2b53f1159e Mon Sep 17 00:00:00 2001
+From: Yicong Huang <hyc541978023@gmail.com>
+Date: Thu, 8 Oct 2020 09:08:06 -0700
+Subject: [PATCH] fix std::stringstream clear issue
+
+---
+ .gitignore                   | 5 ++++-
+ test/rbfm/rbfmtest_public.cc | 2 ++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/.gitignore b/.gitignore
+index 809b926..52f3445 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -124,4 +124,7 @@ fabric.properties
+ # General
+ .DS_Store
+ .AppleDouble
+-.LSOverride
+\ No newline at end of file
++.LSOverride
++
++*.patch
++patch/
+diff --git a/test/rbfm/rbfmtest_public.cc b/test/rbfm/rbfmtest_public.cc
+index 802190e..0080aa8 100644
+--- a/test/rbfm/rbfmtest_public.cc
++++ b/test/rbfm/rbfmtest_public.cc
+@@ -38,6 +38,7 @@ namespace PeterDBTesting {
+         ASSERT_EQ(rbfm.readRecord(fileHandle, recordDescriptor, rid, outBuffer), success)
+                                     << "Reading a inBuffer should succeed.";
+ 
++        stream.str(std::string());
+         stream.clear();
+         rbfm.printRecord(recordDescriptor, outBuffer, stream);
+         ASSERT_NO_FATAL_FAILURE(
+@@ -88,6 +89,7 @@ namespace PeterDBTesting {
+         ASSERT_EQ(rbfm.readRecord(fileHandle, recordDescriptor, rid, outBuffer), success)
+                                     << "Reading a record should succeed.";
+ 
++        stream.str(std::string());
+         stream.clear();
+         rbfm.printRecord(recordDescriptor, outBuffer, stream);
+         ASSERT_NO_FATAL_FAILURE(
+-- 
+2.28.0
+
